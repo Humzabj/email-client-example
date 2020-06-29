@@ -46,7 +46,11 @@
   border-left: none;
 }
 
-.custom-input:focus{
-  border-color: auto;
+.custom-input:focus {
+  border-color: #ced4da;
   box-shadow: none;
+}
+
+.custom-button {
+  background-color: #f5f5f5;
 }
