@@ -6,8 +6,21 @@ import mailArchiverLogo from '../../assets/images/logo.png';
 import filterArrowIcon from '../../assets/images/icon_arrow01.svg';
 import AttachementIcon from '../../assets/images/icon_clip';
 
+const MailBody = props => {
+    const {body} = props;
+    const {isOpen} = props;
+
+    return(
+        <Row className={`px-3 pt-2 pb-1 ${isOpen ? 'd-flex': 'd-none'}`}>
+            <Col>{body}
+            </Col>
+        </Row>
+    );
+}
+
 const MailItem = props => {
     const {mail} = props;
+    const [showBodyFlag, setBodyFlag] = React.useState(false);
 
     const countAttachments = mail => {
         let attachmentElement = <div></div>;
@@ -26,8 +39,16 @@ const MailItem = props => {
         return mail.recipient.join().replace(',', ', ');
     }
 
+    const showBody = () => {
+        setBodyFlag(!showBodyFlag);
+    }
+
     return (
-        <Container fluid className="mail-item">
+        <Container
+            fluid
+            className="mail-item"
+            onClick = {() => showBody()}
+            >
             <Row className="px-3 pt-2 pb-1 row">
                 <Col xs={2} className="mail-item-text">
                     <span>{mail.sender}</span>
@@ -46,6 +67,7 @@ const MailItem = props => {
                     <span>{mail.date}</span>
                 </Col>
             </Row>
+            <MailBody body={mail.body} isOpen={showBodyFlag}/>
         </Container>
     );
 }
