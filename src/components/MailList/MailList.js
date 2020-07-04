@@ -4,6 +4,7 @@ import './MailList.css';
 import {MockMails} from './MockMails';
 import mailArchiverLogo from '../../assets/images/logo.png';
 import filterArrowIcon from '../../assets/images/icon_arrow01.svg';
+import MailRecipientIcon from '../../assets/images/icon_mail_sp.svg';
 import AttachementIcon from '../../assets/images/icon_clip';
 
 const MailBody = props => {
@@ -31,7 +32,7 @@ const MailItem = props => {
     const countRecipients = mail => {
         let recipientCountElement = <div></div>;
         if (mail.recipient.length > 1) 
-            recipientCountElement = <div className="recipient-count-tag">+{(mail.recipient.length - 1)}</div>;
+            recipientCountElement = <div className="recipient-count-tag-mobile">+{(mail.recipient.length - 1)}</div>;
         return recipientCountElement;
     }
 
@@ -49,7 +50,31 @@ const MailItem = props => {
             className="mail-item"
             onClick = {() => showBody()}
             >
-            <Row className="px-3 pt-2 pb-1 row">
+            <Row className="pt-2 pb-1 row mobile-content">
+                <Col xs={1} className="mt-2">
+                    <img alt="Mail Recipient" src={MailRecipientIcon} width="12"/>
+                </Col>
+                <Col xs={11} className="pl-0">
+                    <Row>
+                        <Col xs={8} className="mail-item-text text-bold">
+                            <span>{mail.sender}</span>
+                        </Col>
+                        <Col xs={4} className="mail-item-text text-right">
+                            <span>{mail.date}</span>
+                        </Col>    
+                    </Row>
+                    <Row className="content-gap mt-1">
+                        <Col xs={10} className="mail-item-text">
+                            <span>{joinRecipients(mail)}</span>
+                        </Col>
+                        <Col xs={2} className="mail-item-text text-center">
+                            {countRecipients(mail)}
+                        </Col>
+                    </Row>
+                </Col>
+            </Row>
+            <Row className="px-3 pt-2 pb-1 row desktop-content">
+                {/* For desktop view */}
                 <Col xs={2} className="mail-item-text">
                     <span>{mail.sender}</span>
                 </Col>
@@ -66,6 +91,7 @@ const MailItem = props => {
                 <Col xs={1} className="mail-item-text">
                     <span>{mail.date}</span>
                 </Col>
+                {/* For desktop view */}
             </Row>
             <MailBody body={mail.body} isOpen={showBodyFlag}/>
         </Container>
