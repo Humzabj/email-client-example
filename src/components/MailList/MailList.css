@@ -34,6 +34,31 @@
 }
 
 /* Mail Item classes */
+.mail-item {
+    border-bottom: 1px solid #DFDFDF;
+}
+
+.mail-item:hover {
+    cursor: pointer;
+    background-color: #F7F8FA;
+}
+
+.mail-item:hover *{
+    color: #0832B9;
+}
+
+.mail-item:hover .attachement-icon {
+    fill: #0832B9;
+}
+
+.attachement-icon {
+    margin-top: 4px;
+    width: 20px;
+    float: right;
+    vertical-align: unset;
+    fill: #353535;
+}
+
 .mail-item-text {
     color: #353535;
     white-space: nowrap;
@@ -41,4 +66,22 @@
     text-overflow: ellipsis;
     font-size: 18px;
     font-weight: 500;
+}
+
+.recipient-count-tag {
+    display: inline-block;
+    color: white !important;
+    background-color: #888888;
+    border-radius: 5px;
+    padding-left: 7px;
+    padding-right: 7px;
+    font-size: 15px;
+}
+
+.subject-section {
+    width: 90%;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

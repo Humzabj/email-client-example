@@ -1,72 +1,85 @@
 import React, {Component, Fragment} from 'react';
 import {Row, Col, Container} from 'react-bootstrap';
 import './MailList.css';
+import {MockMails} from './MockMails';
 import mailArchiverLogo from '../../assets/images/logo.png';
-import filterArrow from '../../assets/images/icon_arrow01.svg';
+import filterArrowIcon from '../../assets/images/icon_arrow01.svg';
+import AttachementIcon from '../../assets/images/icon_clip';
 
-function MailItem(props) {
+const MailItem = props => {
+    const {mail} = props;
+
+    const countAttachments = mail => {
+        let attachmentElement = <div></div>;
+        if (mail.attachements) attachmentElement = <AttachementIcon />;
+        return attachmentElement;
+    }
+
+    const countRecipients = mail => {
+        let recipientCountElement = <div></div>;
+        if (mail.recipient.length > 1) 
+            recipientCountElement = <div className="recipient-count-tag">+{(mail.recipient.length - 1)}</div>;
+        return recipientCountElement;
+    }
+
+    const joinRecipients = mail => {
+        return mail.recipient.join().replace(',', ', ');
+    }
+
     return (
-        <Container fluid>
-            <Row className="p-3">
+        <Container fluid className="mail-item">
+            <Row className="px-3 pt-2 pb-1 row">
                 <Col xs={2} className="mail-item-text">
-                    <span>{props.mail.sender}</span>
+                    <span>{mail.sender}</span>
                 </Col>
-                <Col xs={3} className="mail-item-text">
-                    <span>{props.mail.recipient}</span>
+                <Col xs={2} className="mail-item-text">
+                    <span>{joinRecipients(mail)}</span>
+                </Col>
+                <Col xs={1} className="mail-item-text text-center">
+                    {countRecipients(mail)}
                 </Col>
                 <Col xs={6} className="mail-item-text">
-                    <span>{props.mail.subject}</span>
+                    <div className="subject-section">{mail.subject}</div>
+                    {countAttachments(mail)}
                 </Col>
                 <Col xs={1} className="mail-item-text">
-                    <span>{props.mail.date}</span>
+                    <span>{mail.date}</span>
                 </Col>
             </Row>
         </Container>
     );
 }
 
-class FilterBar extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            dateOrderAscending: true
-        }
-    }
+const FilterBar = props => {
+    const [dateOrderAscending, setOrder] = React.useState(true);
 
-    orderByDate() {
-        console.log(this.state.dateOrderAscending);
-        this.state.dateOrderAscending ? (
+    const orderByDate = () => {
+        dateOrderAscending ? (
             document.getElementById('dateFilterIcon').style.transform= "rotate(180deg)"
         ) : (
             document.getElementById('dateFilterIcon').style.transform= "rotate(0deg)"
         );
-        this.setState(
-            {
-                dateOrderAscending: !this.state.dateOrderAscending
-            }
-        )    
+        setOrder(!dateOrderAscending);    
     }
-
-    render() {
-        return(
-            <Container fluid className="filter-box">
-                <Row className="p-3">
-                    <Col xs={2} className="filter-text">From</Col>
-                    <Col xs={3} className="filter-text">To</Col>
-                    <Col xs={6} className="filter-text">Subject</Col>
-                    <Col xs={1} className="filter-text filter-cursor" onClick={() => this.orderByDate()}>Date
-                        <img
-                            id="dateFilterIcon"
-                            className="ml-2"
-                            width="10"
-                            src={filterArrow}
-                            alt="Filter"
-                        />
-                    </Col>
-                </Row>                    
-            </Container>
-        );
-    }
+    
+    return(
+        <Container fluid className="filter-box">
+            <Row className="p-3">
+                <Col xs={2} className="filter-text">From</Col>
+                <Col xs={3} className="filter-text">To</Col>
+                <Col xs={6} className="filter-text">Subject</Col>
+                <Col xs={1} className="filter-text filter-cursor" onClick={() => orderByDate()}>Date
+                    <img
+                        id="dateFilterIcon"
+                        className="ml-2"
+                        width="10"
+                        src={filterArrowIcon}
+                        alt="Filter"
+                    />
+                </Col>
+            </Row>                    
+        </Container>
+    );    
 }
 
 class MailList extends Component {
@@ -75,28 +88,7 @@ class MailList extends Component {
         this.state = {
             isEmpty: false,
             dateOrderAscending: true,
-            mails: [
-                {
-                    recipient: [
-                        'xkcdf@hotmail.com',
-                        'frosterman@hotmail.com',
-                        'jane@hotmail.com',
-                    ],
-                    sender: 'ppp.ppp@gmail.com',
-                    subject: '[Github] Change Request for POC',
-                    date: new Date().toJSON().slice(0,10).replace(/-/g,'/')
-                },
-                {
-                    recipient: [
-                        'doe@hotmail.com',
-                        'jon@hotmail.com',
-                        'someone@hotmail.com',
-                    ],
-                    sender: 'rando_advert@gmail.com',
-                    subject: 'Nougat chocolate special sale 50% off',
-                    date: new Date().toJSON().slice(0,10).replace(/-/g,'/')
-                }
-            ]
+            mails: MockMails,
         }
     }
 
@@ -107,11 +99,7 @@ class MailList extends Component {
         </div>
         if (this.state.mails.length > 0) {
             const mailItems = this.state.mails.map((mail, i) => {
-                // Have to make a deep copy. Shallow copy overrights iterations
-                let mailCopy = JSON.parse(JSON.stringify(mail));
-                mailCopy.recipient = mailCopy.recipient.join().replace(',', ', ');
-                console.log(mailCopy.recipient);
-                return (<MailItem mail={mailCopy} key={i}/>);
+                return (<MailItem mail={mail} key={i}/>);
             });
             content = 
             <Fragment>
@@ -123,7 +111,6 @@ class MailList extends Component {
     }
 
     render() {
-
         const mailContent = this.mailContent();
         return (
             <Row id="MailList" className="mail-box-border">
