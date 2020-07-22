@@ -1,0 +1,138 @@
+/* Mail list component */
+
+.mail-box-border {
+    border-top: 1px solid #DFDFDF;
+}
+
+.filter-box {
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #DFDFDF;
+}
+
+.icon-fix{
+    text-align: center;
+    padding-top: 200px;
+}
+
+.filter-text {
+    color: #696969;
+    font-size: 15px;
+    font-weight: 500;
+    /* Make text unselectable */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    /* Make text unselectable */
+}
+
+.filter-border {
+    border-right: 1px solid #686868;
+}
+
+.filter-cursor {
+    cursor: pointer;
+}
+
+.filter-text-selected {
+    color: #000 !important;
+}
+
+.descending-icon {
+    transform: rotate(0deg);
+}
+
+.ascending-icon {
+    transform: rotate(180deg);
+}
+
+/* Mail Item classes */
+.mail-item {
+    border-bottom: 1px solid #DFDFDF;
+}
+
+.mail-item:hover {
+    cursor: pointer;
+    background-color: #F7F8FA;
+}
+
+.mail-item:hover *{
+    color: #0832B9;
+}
+
+.mail-item:hover .attachement-icon {
+    fill: #0832B9;
+}
+
+.attachement-icon {
+    margin-top: 4px;
+    width: 20px;
+    float: right;
+    vertical-align: unset;
+    fill: #353535;
+}
+
+@media only screen and (max-width: 768px) {
+    .mail-item-text {
+        font-size: 12px !important;
+    }
+    .mobile-content {
+        display: flex;
+    }
+    .desktop-content {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 769px) {
+    .mobile-content {
+        display: none;
+    }
+}
+
+.text-bold {
+    font-weight: bold !important;
+}
+
+/* .content-gap {
+    margin-top: 10px;
+} */
+
+.mail-item-text {
+    color: #353535;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.recipient-count-tag-mobile {
+    display: inline-block;
+    color: white !important;
+    background-color: #888888;
+    border-radius: 5px;
+    padding-left: 4px;
+    padding-right: 4px;
+    font-size: 12px;
+}
+
+.recipient-count-tag {
+    display: inline-block;
+    color: white !important;
+    background-color: #888888;
+    border-radius: 5px;
+    padding-left: 7px;
+    padding-right: 7px;
+    font-size: 15px;
+}
+
+.subject-section {
+    width: 90%;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
