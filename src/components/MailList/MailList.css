@@ -28,9 +28,24 @@
     /* Make text unselectable */
 }
 
+.filter-border {
+    border-right: 1px solid #686868;
+}
+
 .filter-cursor {
-    color: #000;
     cursor: pointer;
+}
+
+.filter-text-selected {
+    color: #000 !important;
+}
+
+.descending-icon {
+    transform: rotate(0deg);
+}
+
+.ascending-icon {
+    transform: rotate(180deg);
 }
 
 /* Mail Item classes */

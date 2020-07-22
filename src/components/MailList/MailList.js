@@ -13,7 +13,8 @@ const MailBody = props => {
 
     return(
         <Row className={`px-3 pt-2 pb-1 ${isOpen ? 'd-flex': 'd-none'}`}>
-            <Col>{body}
+            <Col>
+                {body}
             </Col>
         </Row>
     );
@@ -44,6 +45,8 @@ const MailItem = props => {
         setBodyFlag(!showBodyFlag);
     }
 
+    // useEffect hook
+
     return (
         <Container
             fluid
@@ -70,6 +73,9 @@ const MailItem = props => {
                         <Col xs={2} className="mail-item-text text-center">
                             {countRecipients(mail)}
                         </Col>
+                    </Row>
+                    <Row>
+                        <div className="subject-section" style={{width: '100%'}}>{mail.subject}</div>    
                     </Row>
                 </Col>
             </Row>
@@ -99,32 +105,138 @@ const MailItem = props => {
 }
 
 const FilterBar = props => {
-    const [dateOrderAscending, setOrder] = React.useState(true);
+    const [filterState, setOrder] = React.useState({
+        senderFilter: {
+            active: false,
+            isAscending: false
+        },
+        recipientFilter: {
+            active: false,
+            isAscending: false
+        },
+        subjectFilter: {
+            active: false,
+            isAscending: false
+        },
+        dateFilter: {
+            active: true,
+            isAscending: false
+        }
+    });
+
+    const senderFilterIcon = 
+    <img
+        className={`ml-2
+            ${(filterState.senderFilter.active ? 'd-inline-block filter-text-selected' : 'd-none')}
+            ${(filterState.senderFilter.isAscending? 'ascending-icon' : 'descending-icon')}
+        `}
+        width="10"
+        src={filterArrowIcon}
+        alt="Filter"
+    />;
+
+    const recipientFilterIcon = 
+    <img
+        className={`ml-2
+            ${(filterState.recipientFilter.active ? 'd-inline-block filter-text-selected' : 'd-none')}
+            ${(filterState.recipientFilter.isAscending? 'ascending-icon' : 'descending-icon')}
+        `}
+        width="10"
+        src={filterArrowIcon}
+        alt="Filter"
+    />;
+
+    const subjectFilterIcon =
+    <img
+        className={`ml-2
+            ${(filterState.subjectFilter.active ? 'd-inline-block filter-text-selected' : 'd-none')}
+            ${(filterState.subjectFilter.isAscending? 'ascending-icon' : 'descending-icon')}
+        `}
+        width="10"
+        src={filterArrowIcon}
+        alt="Filter"
+    />;
+
+    const dateFilterIcon = 
+    <img
+        className={`ml-2
+            ${(filterState.dateFilter.active ? 'd-inline-block filter-text-selected' : 'd-none')}
+            ${(filterState.dateFilter.isAscending? 'ascending-icon' : 'descending-icon')}
+        `}
+        width="10"
+        src={filterArrowIcon}
+        alt="Filter"
+    />;
+
+    const changeOrder = (w, x, y, z, dataW, dataX, dataY, dataZ) => {
+        setOrder({
+            senderFilter: {
+                active: w,
+                isAscending: dataW
+            },
+            recipientFilter: {
+                active: x,
+                isAscending: dataX
+            },
+            subjectFilter: {
+                active: y,
+                isAscending: dataY
+            },
+            dateFilter: {
+                active: z,
+                isAscending: dataZ
+            }
+        });
+    }
+
+    const orderBySender = () => {
+        changeOrder(true, false, false, false, !filterState.senderFilter.isAscending, false, false, false);
+        console.log(filterState); 
+    }
+
+    const orderByRecipient = () => {
+        changeOrder(false, true, false, false, false, !filterState.recipientFilter.isAscending, false, false);
+        console.log(filterState); 
+    }
+
+    const orderBySubject = () => {
+        changeOrder(false, false, true, false, false, false, !filterState.subjectFilter.isAscending, false);
+        console.log(filterState); 
+    }
 
     const orderByDate = () => {
-        dateOrderAscending ? (
-            document.getElementById('dateFilterIcon').style.transform= "rotate(180deg)"
-        ) : (
-            document.getElementById('dateFilterIcon').style.transform= "rotate(0deg)"
-        );
-        setOrder(!dateOrderAscending);    
+        changeOrder(false, false, false, true, false, false, false, !filterState.dateFilter.isAscending); 
     }
-    
+
     return(
         <Container fluid className="filter-box">
-            <Row className="p-3">
-                <Col xs={2} className="filter-text">From</Col>
-                <Col xs={3} className="filter-text">To</Col>
-                <Col xs={6} className="filter-text">Subject</Col>
-                <Col xs={1} className="filter-text filter-cursor" onClick={() => orderByDate()}>Date
-                    <img
-                        id="dateFilterIcon"
-                        className="ml-2"
-                        width="10"
-                        src={filterArrowIcon}
-                        alt="Filter"
-                    />
+            <Row className="p-3 desktop-content">
+                <Col xs={2} className="filter-text filter-cursor"  onClick={() => orderBySender()}>From
+                    {senderFilterIcon}
                 </Col>
+                <Col xs={3} className="filter-text filter-cursor"  onClick={() => orderByRecipient()}>To
+                    {recipientFilterIcon}
+                </Col>
+                <Col xs={6} className="filter-text filter-cursor"  onClick={() => orderBySubject()}>Subject
+                    {subjectFilterIcon}
+                </Col>
+                <Col xs={1} className="filter-text filter-cursor" onClick={() => orderByDate()}>Date
+                    {dateFilterIcon}
+                </Col>
+            </Row>                    
+            <Row className="p-3 mobile-content">
+                <div className="filter-text filter-border filter-cursor pr-2" onClick={() => orderBySender()}>From
+                    {senderFilterIcon}
+                </div>
+                <div className="filter-text filter-border filter-cursor pr-2 pl-2" onClick={() => orderByRecipient()}>To
+                    {recipientFilterIcon}
+                </div>
+                <div className="filter-text filter-border filter-cursor pr-2 pl-2" onClick={() => orderBySubject()}>Subject
+                    {subjectFilterIcon}
+                </div>
+                <div className="filter-text filter-cursor pl-2" onClick={() => orderByDate()}>Date
+                    {dateFilterIcon}
+                </div>
             </Row>                    
         </Container>
     );    
@@ -158,8 +270,47 @@ class MailList extends Component {
         return content;
     }
 
+    updateMailList(searchTerm, prevMails) {
+        searchTerm = searchTerm.toLowerCase();
+        if (searchTerm !== '') {
+            let tempMails = MockMails;
+            let newMailList = [];
+            for (let i = 0; i < tempMails.length; i++) {
+                if (tempMails[i].sender.toLowerCase().includes(searchTerm) ||
+                    tempMails[i].subject.toLowerCase().includes(searchTerm) ||
+                    tempMails[i].body.toLowerCase().includes(searchTerm)) {
+                        newMailList.push(tempMails[i]);
+                }
+            }
+            if (JSON.stringify(prevMails) !== JSON.stringify(newMailList)) {
+                this.setState({
+                    mails: newMailList
+                });
+            }
+        } else {
+            if (JSON.stringify(prevMails) !== JSON.stringify(MockMails)) {
+                this.setState({
+                    mails: MockMails
+                });
+            }
+        }
+    }
+
+    componentWillUpdate(nextProps, nextStates) {
+        this.updateMailList(nextProps.searchTerm, nextStates.mails);
+    }
+
+    componentDidUpdate() {
+        this.props.mailListFunction(this.state.mails.length);
+    }
+
+    componentDidMount() {
+        this.props.mailListFunction(this.state.mails.length);
+    }
+
     render() {
         const mailContent = this.mailContent();
+        console.log(this.searchTerm);
         return (
             <Row id="MailList" className="mail-box-border">
               <Col className="p-0">                

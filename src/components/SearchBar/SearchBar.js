@@ -11,7 +11,7 @@ const ResultsCount = (props) => {
         <Col>
             <div>
             <p className="results-text">Results: 
-                <span className="big-text"> 10 </span>
+                <span className="big-text"> {props} </span>
                 mails(s)
             </p>
             </div>
@@ -21,9 +21,18 @@ const ResultsCount = (props) => {
   }
 
 class SearchBar extends React.Component {
+    constructor (props) {
+        super(props);
+        this.textInput = React.createRef();
+    }
+
+    handleChange() {
+        this.props.searchTermFunction(this.textInput.current.value);
+    }
+
     render() {
         return(
-            <Container className="px-5 pt-3" fluid>
+            <Container className="px-md-5 pt-3" fluid>
                 <Row>
                     <Col xl={2}>
                         <div className="App">
@@ -33,7 +42,7 @@ class SearchBar extends React.Component {
                                 <img height="20" src={calendarIcon} alt="calendar"/>
                             </InputGroup.Text>
                             </InputGroup.Prepend>
-                            <FormControl className="custom-input" aria-label="Amount (to the nearest dollar)" />
+                            <FormControl onChange={() => this.handleChange()} ref={this.textInput} className="custom-input" aria-label="Amount (to the nearest dollar)" />
                             <InputGroup.Append>
                             <InputGroup.Text className="custom-button">
                                 <img height="20" src={searchIcon} alt="Search"/>
@@ -43,7 +52,7 @@ class SearchBar extends React.Component {
                         </div>
                     </Col>
                 </Row>
-                {ResultsCount()}
+                {ResultsCount(this.props.mailListLength)}
             </Container>
         );
     }
