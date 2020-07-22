@@ -2,7 +2,7 @@ import React, {Component, Fragment} from 'react';
 import {Row, Col, Container} from 'react-bootstrap';
 import './MailList.css';
 import {MockMails} from './MockMails';
-import mailArchiverLogo from '../../assets/images/logo.png';
+import mailArchiverLogo from '../../assets/images/logo1.png';
 import filterArrowIcon from '../../assets/images/icon_arrow01.svg';
 import MailRecipientIcon from '../../assets/images/icon_mail_sp.svg';
 import AttachementIcon from '../../assets/images/icon_clip';
@@ -255,7 +255,7 @@ class MailList extends Component {
     mailContent() {
         let content =  
         <div className="icon-fix">
-            <img src={mailArchiverLogo} alt="Mail Archiver"/>
+            <img width="150" src={mailArchiverLogo} alt="Mail Archiver"/>
         </div>
         if (this.state.mails.length > 0) {
             const mailItems = this.state.mails.map((mail, i) => {
