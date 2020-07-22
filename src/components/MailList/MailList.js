@@ -278,7 +278,8 @@ class MailList extends Component {
             for (let i = 0; i < tempMails.length; i++) {
                 if (tempMails[i].sender.toLowerCase().includes(searchTerm) ||
                     tempMails[i].subject.toLowerCase().includes(searchTerm) ||
-                    tempMails[i].body.toLowerCase().includes(searchTerm)) {
+                    tempMails[i].body.toLowerCase().includes(searchTerm) ||
+                    JSON.stringify(tempMails[i].recipient).toLowerCase().includes(searchTerm)) {
                         newMailList.push(tempMails[i]);
                 }
             }
